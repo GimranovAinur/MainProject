@@ -1,0 +1,12 @@
+jdbc.driver = com.mysql.jdbc.Driver
+jdbc.uri = jdbc:mysql://localhost:3306/AdviceDB
+db.user = root
+db.password = mysqlpass
+
+
+#Hibernate Configuration:
+hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+hibernate.show_sql=true
+entitymanager.packages.to.scan=info
+hibernate.hbm2ddl.auto =update
+hibernate.enable_lazy_load_no_trans=true
