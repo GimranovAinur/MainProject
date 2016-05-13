@@ -17,7 +17,9 @@
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="scroll active"><a href="${spring:mvcUrl('WC#mainPage').build()}">Home</a></li>
+                    <security:authorize access="isAuthenticated()">
+                    <li class="scroll"><a href="${spring:mvcUrl('UC#myWishes').build()}">My Wishes</a></li>
+                    </security:authorize>
                     <li class="scroll"><a href="${spring:mvcUrl('WC#add').build()}">Wish</a></li>
                     <li class="scroll"><a href="${spring:mvcUrl('WC#feed').build()}">Feed</a></li>
                 </ul>

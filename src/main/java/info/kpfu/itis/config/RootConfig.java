@@ -31,7 +31,7 @@ public class RootConfig extends WebMvcConfigurerAdapter{
         dataSource.setDriverClassName(env.getProperty("jdbc.driver"));
         dataSource.setUrl(env.getProperty("jdbc.uri"));
         dataSource.setUsername(env.getProperty("db.user"));
-        dataSource.setPassword(env.getProperty("db.password"));;
+        dataSource.setPassword(env.getProperty("db.password"));
         return dataSource;
     }
     @Bean

@@ -2,6 +2,7 @@ package info.kpfu.itis.service;
 
 import info.kpfu.itis.model.Advice;
 import info.kpfu.itis.model.User;
+import info.kpfu.itis.model.Wish;
 import info.kpfu.itis.repo.AdviceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,9 @@ public class AdviceService {
         this.adviceRepo=adviceRepo;
     }
 
-    public Advice add(Advice advice,User user){
+    public Advice add(Advice advice,User user, Wish wish){
         advice.setUser(user);
+        advice.setWish(wish);
         return adviceRepo.save(advice);
     }
 }

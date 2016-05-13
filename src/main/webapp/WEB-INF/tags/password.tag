@@ -21,6 +21,8 @@
         <label class="sr-only" for="${path}">${label}</label>
             <form:password path="${path}" cssClass="${empty cssClass ? 'form-control' : cssClass}" placeholder="${placeholder}"/>
             <c:if test="${status.error}">
-                <span class="help-block">${status.errorMessage}</span>
+                <label id="lg_username-error" class="form-invalid" for="${id}" style="display: block;">
+                        ${status.errorMessage}
+                </label>
             </c:if>
 </spring:bind>

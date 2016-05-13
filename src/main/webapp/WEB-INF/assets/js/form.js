@@ -1,5 +1,5 @@
-(function($) {
-    "use strict";
+jQuery(function($) {
+    'use strict';
 
     // Options for Message
     //----------------------------------------------
@@ -128,4 +128,4 @@
         }
     }
 
-})(jQuery);
+});

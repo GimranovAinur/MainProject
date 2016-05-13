@@ -1,12 +1,16 @@
 package info.kpfu.itis.config;
 
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 import java.util.Set;
@@ -14,6 +18,26 @@ import java.util.Set;
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 
+    @Override
+    protected Filter[] getServletFilters() {
+
+        // if encoding has issues we need to add UTF-8 encoding filter
+
+        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+
+        encodingFilter.setForceEncoding(true);
+
+        encodingFilter.setEncoding("UTF-8");
+
+        // encoding filter must be the first one
+
+        return new Filter[]{encodingFilter,
+
+                new DelegatingFilterProxy("springSecurityFilterChain"),
+
+                new OpenEntityManagerInViewFilter()};
+
+    }
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -31,29 +55,10 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
     }
 
     @Override
-    protected void registerDispatcherServlet(ServletContext servletContext) {
-
-        String servletName = super.getServletName();
-        Assert.hasLength(servletName, "getServletName() may not return empty or null");
-
-        WebApplicationContext servletAppContext = super.createServletApplicationContext();
-        Assert.notNull(servletAppContext,
-                "createServletApplicationContext() did not return an application " +
-                        "context for servlet [" + servletName + "]");
-
-        DispatcherServlet dispatcherServlet = new DispatcherServlet(servletAppContext);
-
-        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
-
-        ServletRegistration.Dynamic registration = servletContext.addServlet(servletName, dispatcherServlet);
-        Assert.notNull(registration,
-                "Failed to register servlet with name '" + servletName + "'." +
-                        "Check if there is another servlet registered under the same name.");
-
-        registration.setLoadOnStartup(1);
-        registration.addMapping(getServletMappings());
-        registration.setAsyncSupported(isAsyncSupported());
-
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         super.customizeRegistration(registration);
+        registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
     }
+
+
 }

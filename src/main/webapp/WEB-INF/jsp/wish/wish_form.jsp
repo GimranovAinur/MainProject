@@ -9,7 +9,8 @@
 <t:mainLayout title="Wish">
     <security:authorize access="isAuthenticated()">
     <form:form method="POST" commandName="wish" id="Highlighted-form" class="col-sm-6 col-sm-offset-3">
-    <div class="form-group">
+    <spring:bind path="text">
+    <div class="form-group${status.error ? ' has-error' : '' }">
         <label class="control-label" for="contact-message">Message</label>
         <div class="controls">
             <form:textarea id="contact-message" path="text" name="comments" placeholder="What's in your mind?" class="form-control requiredField Highlighted-label" data-new-placeholder="Your message" rows="6" data-error-empty="Please enter your message"></form:textarea>
@@ -18,6 +19,10 @@
     </div>
     <p><button name="submit" type="submit" class="btn btn-info btn-block" data-error-message="Error!" data-sending-message="Sending..." data-ok-message="Sent"><i class="fa fa-location-arrow"></i>Send</button></p>
     <input type="hidden" name="submitted" id="submitted" value="true">
+        <c:if test="${status.error}">
+            <div class="login-form-main-message show error">${status.errorMessage}</div>
+        </c:if>
+    </spring:bind>
     </form:form>
     </security:authorize>
 

@@ -10,5 +10,5 @@ import info.kpfu.itis.model.User;
  */
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer>{
-    User findByUsername(String username);
+    User findByUsernameIgnoreCase(String username);
 }

@@ -31,22 +31,18 @@
                         </div>
 
                         <div class="form-group login-group-checkbox">
-                            <input type="radio" class="" name="reg_gender" id="male" placeholder="username">
+                            <form:radiobutton path="gender" value="male" id="male" class=""/>
                             <label for="male">male</label>
 
-                            <input type="radio" class="" name="reg_gender" id="female" placeholder="username">
+                            <form:radiobutton path="gender" value="female" id="female" class=""/>
                             <label for="female">female</label>
                         </div>
 
-                        <div class="form-group login-group-checkbox">
-                            <input type="checkbox" class="" id="reg_agree" name="reg_agree">
-                            <label for="reg_agree">i agree with <a href="#">terms</a></label>
-                        </div>
                     </div>
                     <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
                 </div>
                 <div class="etc-login-form">
-                    <p>already have an account? <a href="#">login here</a></p>
+                    <p>already have an account? <a href="<c:url value="/login"/> ">login here</a></p>
                 </div>
             </form:form>
         </div>

@@ -44,7 +44,9 @@
         </c:forEach>
       </form:select>
       <c:if test="${status.error}">
-        <span class="help-block">${status.errorMessage}</span>
+        <label id="lg_username-error" class="form-invalid" for="${id}" style="display: block;">
+            ${status.errorMessage}
+        </label>
       </c:if>
     </div>
   </div>

@@ -6,6 +6,17 @@
 
 <%@attribute name="title"%>
 
+<c:if test="${not empty messageType}" >
+    <c:choose>
+        <c:when test="${messageType == 'success'}">
+            <c:set var="messageClass" value="success"/>
+        </c:when>
+        <c:when test="${messageType == 'fail'}">
+            <c:set var="messageClass" value="error"/>
+        </c:when>
+    </c:choose>
+</c:if>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,12 +46,19 @@
     <link href="<c:url value="/assets/css/prettyPhoto.css"/>" rel="stylesheet">
     <link href="<c:url value="/assets/css/main.css"/>" rel="stylesheet">
     <link href="<c:url value="/assets/css/responsive.css"/>" rel="stylesheet">
+    <link href="<c:url value="/assets/css/wish.css"/>" rel="stylesheet">
     <title>${title}</title>
 </head>
 
 <body id="home" class="homepage">
 <c:if test="${not empty message}" >
-    <c:out value="${message}"/>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6" style="width: 70%; padding-left: 400px;">
+                <div class="login-form-main-message show ${empty messageClass ? '' : messageClass}">${message}</div>
+            </div>
+        </div>
+    </div>
 </c:if>
 <jsp:include page="/WEB-INF/jsp/blocks/header.jsp"/>
 <jsp:doBody/>

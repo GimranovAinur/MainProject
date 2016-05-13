@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller("changeLocaleController")
 public class LocaleController {
 
+
     private MessageSourceAccessor msa;
 
     @Autowired

@@ -35,9 +35,6 @@ public class User implements CredentialsContainer, UserDetails {
     @Length(max = 255)
     private String surname;
 
-    @ManyToOne(targetEntity = City.class)
-    private String city;
-
     @Email
     @NotBlank
     @Column(nullable = false, unique = true)
@@ -51,6 +48,18 @@ public class User implements CredentialsContainer, UserDetails {
     @Transient
     private String passwordRepeat;
 
+    @NotBlank
+    @Column(name = "gender")
+    private String gender;
+
+    @Column(name = "background_image")
+    @Length(max = 1000)
+    private String backgroundImage;
+
+    @Column(name = "avatar")
+    @Length(max = 1000)
+    private String avatar;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade={CascadeType.MERGE})
     @JoinTable(
             name = "user_user_role",
@@ -59,7 +68,7 @@ public class User implements CredentialsContainer, UserDetails {
     )
     private Set<UserAuthority> authorities = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user" , cascade = CascadeType.ALL)
     private Set<Wish> wishes;
 
     public void eraseCredentials(){
@@ -88,49 +97,31 @@ public class User implements CredentialsContainer, UserDetails {
         this.passwordRepeat = passwordRepeat;
     }
 
+    public User(String name, String surname, String username, String password, String passwordRepeat, String gender, String backgroundImage, String avatar, Set<UserAuthority> authorities, Set<Wish> wishes) {
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.password = password;
+        this.passwordRepeat = passwordRepeat;
+        this.gender = gender;
+        this.backgroundImage = backgroundImage;
+        this.avatar = avatar;
+        this.authorities = authorities;
+        this.wishes = wishes;
+    }
+
+    public User(String name, String surname, String username, String password, String passwordRepeat, String gender, String backgroundImage, String avatar) {
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.password = password;
+        this.passwordRepeat = passwordRepeat;
+        this.gender = gender;
+        this.backgroundImage = backgroundImage;
+        this.avatar = avatar;
+    }
+
     public User() {}
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 67 * hash + Objects.hashCode(this.id);
-        hash = 67 * hash + Objects.hashCode(this.username);
-        hash = 67 * hash + Objects.hashCode(this.name);
-        hash = 67 * hash + Objects.hashCode(this.surname);
-        hash = 67 * hash + Objects.hashCode(this.password);
-        hash = 67 * hash + Objects.hashCode(this.passwordRepeat);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final User other = (User) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.username, other.username)) {
-            return false;
-        }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.surname, other.surname)) {
-            return false;
-        }
-        if (!Objects.equals(this.password, other.password)) {
-            return false;
-        }
-        if (!Objects.equals(this.passwordRepeat, other.passwordRepeat)) {
-            return false;
-        }
-        return true;
-    }
 
     public int getId() {
         return id;
@@ -181,14 +172,6 @@ public class User implements CredentialsContainer, UserDetails {
         this.passwordRepeat = passwordRepeat;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     @Override
     public Set<UserAuthority> getAuthorities() {
         return authorities;
@@ -204,6 +187,74 @@ public class User implements CredentialsContainer, UserDetails {
 
     public void setWishes(Set<Wish> wishes) {
         this.wishes = wishes;
+    }
+
+    public String getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImage(String backgroundImage) {
+        this.backgroundImage = backgroundImage;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (id != user.id) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (passwordRepeat != null ? !passwordRepeat.equals(user.passwordRepeat) : user.passwordRepeat != null)
+            return false;
+        if (gender != null ? !gender.equals(user.gender) : user.gender != null) return false;
+        if (backgroundImage != null ? !backgroundImage.equals(user.backgroundImage) : user.backgroundImage != null)
+            return false;
+        if (avatar != null ? !avatar.equals(user.avatar) : user.avatar != null) return false;
+        if (authorities != null ? !authorities.equals(user.authorities) : user.authorities != null) return false;
+        return !(wishes != null ? !wishes.equals(user.wishes) : user.wishes != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (passwordRepeat != null ? passwordRepeat.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        result = 31 * result + (backgroundImage != null ? backgroundImage.hashCode() : 0);
+        result = 31 * result + (avatar != null ? avatar.hashCode() : 0);
+        result = 31 * result + (authorities != null ? authorities.hashCode() : 0);
+        result = 31 * result + (wishes != null ? wishes.hashCode() : 0);
+        return result;
+    }
+
+    public void addAuthority(UserAuthority authority) {
+        this.authorities.add(authority);
     }
 
     @Override
